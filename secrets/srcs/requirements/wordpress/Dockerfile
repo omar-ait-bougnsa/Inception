@@ -1,14 +1,23 @@
-FROM debian:latest
+FROM debian:bullseye
 
-RUN apt update && \
-    apt install -y php php-fpm php-mysql wget unzip && \
-    mkdir -p /var/www/html && \
-    wget https://wordpress.org/latest.zip -O /tmp/wordpress.zip && \
-    unzip /tmp/wordpress.zip -d /tmp && \
-    cp -r /tmp/wordpress/* /var/www/html/ && \
-    chown -R www-data:www-data /var/www/html && \
-    rm -rf /tmp/wordpress /tmp/wordpress.zip
+RUN apt update -y && apt upgrade -y
 
-WORKDIR /var/www/html
+RUN apt-get -y install wget
+RUN apt-get install -y php7.4-fpm php7.4-mysqli curl iputils-ping
 
-CMD ["php-fpm", "-F"]
+RUN mkdir -p /run/php
+RUN chown -R www-data:www-data /run/php
+
+COPY /conf/wp-config.sh  .
+COPY conf/www.conf /etc/php/7.4/fpm/pool.d/.
+
+RUN chmod +x wp-config.sh
+
+RUN wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+RUN chmod +x wp-cli.phar
+RUN mv wp-cli.phar /usr/local/bin/wp
+
+RUN touch /var/run/php/php7.4-fpm.pid && \
+    chown www-data:www-data /var/run/php/php7.4-fpm.pid
+
+ENTRYPOINT ["./setup.sh"]
