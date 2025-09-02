@@ -15,7 +15,6 @@ RUN apt-get update && apt-get install -y \
     curl \
     unzip \
     wget \
-    less \
     iputils-ping \
  && rm -rf /var/lib/apt/lists/*
 
