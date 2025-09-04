@@ -10,7 +10,6 @@ RUN mkdir -p /var/run/mysqld \
     && mkdir -p /var/lib/mysql \
     && chown -R mysql:mysql /var/lib/mysql
 
-# Copy configuration file
 COPY conf/server.conf /etc/mysql/mariadb.conf.d/50-server.cnf
 
 COPY tools/setupdb.sh /usr/local/bin/setupdb.sh 

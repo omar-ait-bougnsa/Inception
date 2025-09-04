@@ -9,7 +9,7 @@ fi
 service mariadb start
 
 while !mysqladmin ping --silent; do
-  sleep 2
+  sleep 200
 done
 
 mysql -e "CREATE DATABASE IF NOT EXISTS \`${MYSQL_DATABASE}\`;"
