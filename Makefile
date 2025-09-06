@@ -1,10 +1,19 @@
-
 all:
-	cd secrets/srcs && docker compose up --build
+	mkdir -p /home/omar/data/mariadb
+	mkdir -p /home/omar/data/wordpress
+	cd secrets/srcs && docker compose up --build -d
+
 down:
-	docker compose down
+	cd secrets/srcs && docker compose down
+
 clean:
-	docker compose down --rmi all -v --remove-orphans
+	cd secrets/srcs && docker compose down --rmi all -v
+
 fclean:
-	docker compose down --rmi all -v --remove-orphans
-	docker system prune -a --volumes
+	cd secrets/srcs && docker compose down --rmi all -v
+	sudo rm -rf /home/omar/data/mariadb
+	sudo rm -rf /home/omar/data/wordpress
+
+re: fclean all
+
+.PHONY: all down clean fclean re
