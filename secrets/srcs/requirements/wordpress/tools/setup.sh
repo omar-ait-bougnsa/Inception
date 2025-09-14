@@ -11,7 +11,7 @@ if [ ! -f "wp-config.php" ]; then
   wp core download --allow-root
 
   echo  "\ncreating wp-config.php"
-  
+
   wp config create --allow-root \
     --dbname="$WORDPRESS_DB_NAME" \
     --dbuser="$WORDPRESS_DB_USER" \
