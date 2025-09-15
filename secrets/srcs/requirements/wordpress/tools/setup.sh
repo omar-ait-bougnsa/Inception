@@ -6,6 +6,8 @@ chown -R www-data:www-data /var/www/wordpress
 
 cd /var/www/wordpress
 
+WORDPRESS_DB_PASSWORD="$(cat /run/secrets/db_password)"
+
 if [ ! -f "wp-config.php" ]; then
   echo "downloading wordpress core files"
   wp core download --allow-root

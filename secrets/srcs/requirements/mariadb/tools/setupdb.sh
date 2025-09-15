@@ -8,14 +8,17 @@ fi
 
 service mariadb start
 
-while !mysqladmin ping --silent; do
-  sleep 2
+ROOT_PASSWORD="$(cat /run/secrets/db_root_password)"
+WORDPRESS_DB_PASSWORD="$(cat /run/secrets/db_password)"
+
+while ! mysqladmin ping --silent; do
+    sleep 2
 done
-mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '${MYSQL_ROOT_PASSWORD}';"
-mysql -e "CREATE DATABASE IF NOT EXISTS \`${MYSQL_DATABASE}\`;"
-mysql -e "CREATE USER IF NOT EXISTS '${WORDPRESS_DB_USER}'@'%' IDENTIFIED BY '${WORDPRESS_DB_PASSWORD}';"
-mysql -e "GRANT ALL PRIVILEGES ON \`${MYSQL_DATABASE}\`.* TO '${WORDPRESS_DB_USER}'@'%';"
-mysql -e "FLUSH PRIVILEGES;"
+mysql -uroot -e "CREATE DATABASE IF NOT EXISTS \`${MYSQL_DATABASE}\`;"
+mysql -uroot -e "CREATE USER IF NOT EXISTS '${WORDPRESS_DB_USER}'@'%' IDENTIFIED BY '${WORDPRESS_DB_PASSWORD}';"
+mysql -uroot -e "GRANT ALL PRIVILEGES ON \`${MYSQL_DATABASE}\`.* TO '${WORDPRESS_DB_USER}'@'%';"
+mysql -uroot -e "FLUSH PRIVILEGES;"
+mysql -uroot -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '${ROOT_PASSWORD}';"
 
 service mariadb stop
 
