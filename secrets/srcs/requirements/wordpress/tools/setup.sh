@@ -25,7 +25,7 @@ if [ ! -f "wp-config.php" ]; then
     --title="Inception" \
     --admin_user="$WORDPRESS_DB_USER" \
     --admin_password="$WORDPRESS_DB_PASSWORD" \
-    --admin_email="$USER_EMAIL"
+    --admin_email="$ADMIN_EMAIL"
 
   wp user create --allow-root \
     "user2" "user2@example.com" \
