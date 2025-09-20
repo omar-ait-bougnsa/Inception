@@ -2,10 +2,11 @@
 set -e
 
 first_time=0
-if [ ! -d "/var/lib/mysql/mysql" ]; then
-  echo "----------------ppppp----------------"
+if [ ! -f "/var/lib/mysql/.check" ]; then
+  echo "-----------------"
+  echo "First time initialization"
   mysql_install_db --user=mysql --datadir=/var/lib/mysql
-  echo "mariadb mysql database initialized"
+  touch /var/lib/mysql/.check
   first_time=1
 fi
 echo "starting mariadb----------------"
